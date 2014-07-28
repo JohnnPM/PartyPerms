@@ -1,7 +1,20 @@
 package project.party.rank;
 
+import project.party.inventory.AdminInventory;
+import project.party.inventory.AgentInventory;
+import project.party.inventory.AgentPlusInventory;
+import project.party.inventory.BuildTeamInventory;
 import project.party.inventory.DClassInventory;
+import project.party.inventory.HelperInventory;
+import project.party.inventory.ModeratorInventory;
+import project.party.inventory.OperatorInventory;
+import project.party.inventory.OwnerInventory;
 import project.party.inventory.PartyInventory;
+import project.party.inventory.PreHelperInventory;
+import project.party.inventory.PreModeratorInventory;
+import project.party.inventory.ProfessionalInventory;
+import project.party.inventory.StreamerInventory;
+import project.party.inventory.YoutuberInventory;
 
 
 /**
@@ -11,20 +24,20 @@ import project.party.inventory.PartyInventory;
  */
 public enum PartyRank {
 
-	OWNER(false, true, "OWNER", "Director", "OWNER", null),
-	ADMIN(false, true, "ADMIN", "Director", "ADMIN", null),
-	OPERATOR(false, true, "OPERATOR", "Director", "OP", null),
-	MODERATOR(false, true, "MODERATOR", "Agent", "MOD", null),
-	PREMODERATOR(false, true, "PREMODERATOR", "Agent", "MOD", null),
-	HELPER(false, true, "HELPER", "Agent", "HELPER", null),
-	PREHELPER(false, true, "PREHELPER", "Agent", "HELPER", null),
-	AGENTPLUS(false, false, "AGENT+", "Agent+", "AGENT+", null),
-	AGENT(false, false, "AGENT", "Agent", "AGENT", null),
+	OWNER(false, true, "OWNER", "Director", "OWNER", new OwnerInventory()),
+	ADMIN(false, true, "ADMIN", "Director", "ADMIN", new AdminInventory()),
+	OPERATOR(false, true, "OPERATOR", "Director", "OP", new OperatorInventory()),
+	MODERATOR(false, true, "MODERATOR", "Agent", "MOD", new ModeratorInventory()),
+	PREMODERATOR(false, true, "PREMODERATOR", "Agent", "MOD", new PreModeratorInventory()),
+	HELPER(false, true, "HELPER", "Agent", "HELPER", new HelperInventory()),
+	PREHELPER(false, true, "PREHELPER", "Agent", "HELPER", new PreHelperInventory()),
+	AGENTPLUS(false, false, "AGENT+", "Agent+", "AGENT+", new AgentPlusInventory()),
+	AGENT(false, false, "AGENT", "Agent", "AGENT", new AgentInventory()),
 	DCLASS(true, false, "DCLASS", "", null, new DClassInventory()),
-	BUILDTEAM(false, false, "BUILDTEAM", "BuildTeam", "BUILDTEAM", null),
-	PROFESSIONAL(false, false, "PROFESSIONAL", "Pro", "PRO", null),
-	YOUTUBER(false, false, "YOUTUBER", "Youtuber", "YT", null),
-	STREAMER(false, false, "STREAMER", "Streamer", "STREAMER", null),
+	BUILDTEAM(false, false, "BUILDTEAM", "BuildTeam", "BUILDTEAM", new BuildTeamInventory()),
+	PROFESSIONAL(false, false, "PROFESSIONAL", "Pro", "PRO", new ProfessionalInventory()),
+	YOUTUBER(false, false, "YOUTUBER", "Youtuber", "YT", new YoutuberInventory()),
+	STREAMER(false, false, "STREAMER", "Streamer", "STREAMER", new StreamerInventory()),
 	
 	INVAILD(false, false, "N/A", "N/A", "N/A", null);
 

@@ -12,11 +12,15 @@ import static project.party.util.LogUtil.log;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import project.party.commands.CommandFramework;
+import project.party.commands.CommandFramework.ClassEnumerator;
 import project.party.config.Config;
 import project.party.lib.References;
 import project.party.sql.MySQL;
@@ -37,7 +41,7 @@ import project.party.sql.MySQL;
  * 
  * @author 598Johnn897
  */
-public class PartyPermsMain extends JavaPlugin {
+public class PartyPermsMain extends JavaPlugin implements Listener {
 
 	private static PartyPermsMain plugin;
 
@@ -85,10 +89,11 @@ public class PartyPermsMain extends JavaPlugin {
 		try {
 			if (plugin == null)
 				plugin = this;
-
+			registerEvents();
+			
 			framework.registerCommands();
 			framework.registerHelp();
-
+			
 			File folder = getDataFolder();
 			if (!folder.exists()) {
 				folder.mkdir();
@@ -131,5 +136,40 @@ public class PartyPermsMain extends JavaPlugin {
 	public boolean onCommand(CommandSender sender,
 			org.bukkit.command.Command command, String label, String[] args) {
 		return framework.handleCommand(sender, label, command, args);
+	}
+	
+	/**
+	 * Dynamically registers all listeners/events in project.
+	 */
+	public void registerEvents() {
+		Class<?>[] classes = ClassEnumerator.getInstance()
+				.getClassesFromThisJar(plugin);
+		if (classes == null || classes.length == 0) {
+			return;
+		}
+		for (Class<?> c : classes) {
+			try {
+				if (Listener.class.isAssignableFrom(c)
+						&& !c.isInterface() && !c.isEnum() && !c.isAnnotation()) {
+					if (JavaPlugin.class.isAssignableFrom(c)) {
+						if (plugin.getClass().equals(c)) {
+							plugin.getLogger().log(Level.INFO,
+									"Searching class: " + c.getSimpleName());
+							Bukkit.getPluginManager().registerEvents(plugin, plugin);;
+						}
+					} else {
+						plugin.getLogger().log(Level.INFO,
+								"Searching class: " + c.getSimpleName());
+						Bukkit.getPluginManager().registerEvents((Listener) c.newInstance(), plugin);;
+					}
+				}
+			} catch (IllegalAccessException | InstantiationException e) {
+				plugin.getLogger().log(
+						Level.INFO,
+						c.getSimpleName()
+								+ " does not use the default constructor");
+				e.printStackTrace();
+			}
+		}
 	}
 }
