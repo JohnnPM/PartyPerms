@@ -1,0 +1,7 @@
+==== SQL DATABASE ====
+
+hostname: 127.0.0.1
+port : 3306
+database : ProjectParty
+username: root
+password: projectparty
