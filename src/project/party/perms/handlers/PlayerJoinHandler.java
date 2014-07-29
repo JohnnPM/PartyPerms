@@ -41,7 +41,7 @@ public class PlayerJoinHandler implements Listener {
 
 	private PartyPermsMain plugin = PartyPermsMain.get();
 	private Storage storage = plugin.getStorage();
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		try {
@@ -49,14 +49,15 @@ public class PlayerJoinHandler implements Listener {
 			String playerName = player.getName();
 			String playerDisplayName = player.getDisplayName();
 			UUID playerUUID = player.getUniqueId();
-			
-			//storage.clazz.put(playerUUID, PartyClass.CLASSD);
-			
+
+			// storage.clazz.put(playerUUID, PartyClass.CLASSD);
+
 			long joined = player.getFirstPlayed();
 			Date date = new Date(joined);
-			SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy h:mm a z");
-			player.sendMessage("Date First Played: "+format.format(date));
-			} catch (Exception e) {
+			SimpleDateFormat format = new SimpleDateFormat(
+					"MMMM dd, yyyy h:mm a z");
+			player.sendMessage("Date First Played: " + format.format(date));
+		} catch (Exception e) {
 			handleCrash(e);
 		}
 	}

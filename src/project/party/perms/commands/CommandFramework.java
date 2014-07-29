@@ -179,6 +179,7 @@ public class CommandFramework {
 		if (classes == null || classes.length == 0) {
 			return;
 		}
+		plugin.getLogger().log(Level.INFO, "Starting registration of commands:");
 		for (Class<?> c : classes) {
 			try {
 				if (CommandListener.class.isAssignableFrom(c)
@@ -211,6 +212,7 @@ public class CommandFramework {
 				e.printStackTrace();
 			}
 		}
+		plugin.getLogger().log(Level.INFO, "Finished registration of commands.");
 	}
 
 	/**
@@ -808,16 +810,5 @@ public class CommandFramework {
 			}
 			return classes;
 		}
-	}
-
-	public class CommandHandler implements CommandExecutor {
-
-		@Override
-		public boolean onCommand(CommandSender sender,
-				org.bukkit.command.Command command, String label, String[] args) {
-			handleCommand(sender, label, command, args);
-			return false;
-		}
-
 	}
 }

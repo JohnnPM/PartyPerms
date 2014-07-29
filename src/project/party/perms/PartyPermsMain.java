@@ -52,15 +52,17 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 	}
 
 	private PartyInvHandler invHandler;
+
 	public PartyInvHandler getPartyInvHandler() {
 		return invHandler;
 	}
-	
+
 	private Storage storage;
+
 	public Storage getStorage() {
 		return storage;
 	}
-	
+
 	private File configFile;
 	private Config config;
 
@@ -81,7 +83,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 	}
 
 	private CommandFramework framework;
-	
+
 	private int start;
 	private int end;
 
@@ -103,10 +105,10 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 			if (plugin == null)
 				plugin = this;
 			this.registerEvents();
-			
+
 			framework.registerCommands();
 			framework.registerHelp();
-			
+
 			File folder = getDataFolder();
 			if (!folder.exists()) {
 				folder.mkdir();
@@ -132,7 +134,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 			handleCrash(e);
 		} finally {
 			end = (int) (System.currentTimeMillis() - start);
-			log(String.format("%s has enabled. [%d]", References.NAME, end));
+			log(String.format("%s has enabled. [%dms]", References.NAME, end));
 		}
 	}
 
@@ -150,7 +152,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 			org.bukkit.command.Command command, String label, String[] args) {
 		return framework.handleCommand(sender, label, command, args);
 	}
-	
+
 	/**
 	 * Dynamically registers all listeners/events in project.
 	 */
@@ -160,20 +162,24 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 		if (classes == null || classes.length == 0) {
 			return;
 		}
+		plugin.getLogger().log(Level.INFO, "Starting registration of events:");
 		for (Class<?> c : classes) {
 			try {
-				if (Listener.class.isAssignableFrom(c)
-						&& !c.isInterface() && !c.isEnum() && !c.isAnnotation()) {
+				if (Listener.class.isAssignableFrom(c) && !c.isInterface()
+						&& !c.isEnum() && !c.isAnnotation()) {
 					if (JavaPlugin.class.isAssignableFrom(c)) {
 						if (plugin.getClass().equals(c)) {
 							plugin.getLogger().log(Level.INFO,
 									"Searching class: " + c.getSimpleName());
-							Bukkit.getPluginManager().registerEvents(plugin, plugin);
+							Bukkit.getPluginManager().registerEvents(plugin,
+									plugin);
 						}
 					} else {
 						plugin.getLogger().log(Level.INFO,
 								"Searching class: " + c.getSimpleName());
-						Bukkit.getPluginManager().registerEvents((Listener) c.newInstance(), plugin);;
+						Bukkit.getPluginManager().registerEvents(
+								(Listener) c.newInstance(), plugin);
+						;
 					}
 				}
 			} catch (IllegalAccessException | InstantiationException e) {
@@ -184,5 +190,6 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 				e.printStackTrace();
 			}
 		}
+		plugin.getLogger().log(Level.INFO, "Finished registration of events.");
 	}
 }
