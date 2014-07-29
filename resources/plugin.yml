@@ -1,4 +1,4 @@
 name: PartyPerms
 version: 0.0.1-DEV
-main: project.party.PartyPermsMain
+main: project.party.perms.PartyPermsMain
 author: Johnn

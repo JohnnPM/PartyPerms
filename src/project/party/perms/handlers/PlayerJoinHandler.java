@@ -9,6 +9,8 @@ package project.party.perms.handlers;
 
 import static project.party.perms.util.CrashUtil.handleCrash;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -17,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import project.party.perms.PartyPermsMain;
+import project.party.perms.storage.Storage;
 
 /**
  * Created: Jul 28, 2014 <br>
@@ -37,6 +40,7 @@ import project.party.perms.PartyPermsMain;
 public class PlayerJoinHandler implements Listener {
 
 	private PartyPermsMain plugin = PartyPermsMain.get();
+	private Storage storage = plugin.getStorage();
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
@@ -46,7 +50,13 @@ public class PlayerJoinHandler implements Listener {
 			String playerDisplayName = player.getDisplayName();
 			UUID playerUUID = player.getUniqueId();
 			
-		} catch (Exception e) {
+			//storage.clazz.put(playerUUID, PartyClass.CLASSD);
+			
+			long joined = player.getFirstPlayed();
+			Date date = new Date(joined);
+			SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy h:mm a z");
+			player.sendMessage("Date First Played: "+format.format(date));
+			} catch (Exception e) {
 			handleCrash(e);
 		}
 	}

@@ -22,8 +22,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import project.party.perms.commands.CommandFramework;
 import project.party.perms.commands.CommandFramework.ClassEnumerator;
 import project.party.perms.config.Config;
+import project.party.perms.handlers.PartyInvHandler;
 import project.party.perms.lib.References;
 import project.party.perms.sql.MySQL;
+import project.party.perms.storage.Storage;
 
 /**
  * Created: Jul 28, 2014 <br>
@@ -49,6 +51,16 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 		return plugin;
 	}
 
+	private PartyInvHandler invHandler;
+	public PartyInvHandler getPartyInvHandler() {
+		return invHandler;
+	}
+	
+	private Storage storage;
+	public Storage getStorage() {
+		return storage;
+	}
+	
 	private File configFile;
 	private Config config;
 
@@ -78,6 +90,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 		try {
 			plugin = this;
 			framework = new CommandFramework(this);
+			invHandler = new PartyInvHandler();
 			start = (int) System.currentTimeMillis();
 		} catch (Exception e) {
 			handleCrash(e);
@@ -89,7 +102,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 		try {
 			if (plugin == null)
 				plugin = this;
-			registerEvents();
+			this.registerEvents();
 			
 			framework.registerCommands();
 			framework.registerHelp();
@@ -155,7 +168,7 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 						if (plugin.getClass().equals(c)) {
 							plugin.getLogger().log(Level.INFO,
 									"Searching class: " + c.getSimpleName());
-							Bukkit.getPluginManager().registerEvents(plugin, plugin);;
+							Bukkit.getPluginManager().registerEvents(plugin, plugin);
 						}
 					} else {
 						plugin.getLogger().log(Level.INFO,

@@ -9,6 +9,7 @@ package project.party.perms;
 
 import org.bukkit.OfflinePlayer;
 
+import project.party.perms.handlers.PartyInvHandler;
 import project.party.perms.rank.PartyClass;
 import project.party.perms.rank.PartyRank;
 
@@ -30,6 +31,8 @@ public interface IPartyPermsAPI {
 	PartyRank getRank(OfflinePlayer player);
 	PartyClass getClass(OfflinePlayer player);
 	
-	void setRank(OfflinePlayer player);
-	void setClass(OfflinePlayer player);
+	void setRank(OfflinePlayer player, PartyRank rank);
+	void setClass(OfflinePlayer player, PartyClass clazz);
+	
+	PartyInvHandler getPartyInvHandler();
 }

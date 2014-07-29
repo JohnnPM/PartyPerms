@@ -160,7 +160,7 @@ public class CommandFramework {
 							+ m.getName() + ". Unexpected return type");
 					continue;
 				}
-				registerCompleter(comp.name(), m, obj);
+				registerCompleter(comp.command(), m, obj);
 				for (String alias : comp.aliases()) {
 					registerCompleter(alias, m, obj);
 				}
@@ -373,7 +373,7 @@ public class CommandFramework {
 		 * 
 		 * @return
 		 */
-		String name();
+		String command();
 
 		/**
 		 * A list of alternate names that the completer is executed under. See
