@@ -7,16 +7,17 @@
  */
 package project.party.perms.util;
 
+import static project.party.perms.util.FileUtil.writeTo;
+import static project.party.perms.util.LogUtil.logError;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-import org.bukkit.Bukkit;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import project.party.perms.PartyPermsMain;
 import project.party.perms.lib.References;
-import static project.party.perms.util.FileUtil.writeTo;
-import static project.party.perms.util.LogUtil.logError;
 
 /**
  * Created: Jul 28, 2014 <br>
@@ -65,14 +66,13 @@ public class CrashUtil {
 				file.createNewFile();
 				writeTo(file,
 						String.format("crash-%d-%02d-%02d %02d.%02d \n", year,
-								day, month + 1, hour, minute) + e.toString());
+								day, month + 1, hour, minute) + ExceptionUtils.getFullStackTrace(e));
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
 		logError(References.NAME
-				+ ": An Error Has Occured During Start Up! Crash Exceptions Can Be Found At: "
+				+ ": An Error Has Occured! Crash Exceptions Can Be Found At: "
 				+ plugin.getDataFolder().getAbsolutePath());
-		Bukkit.getPluginManager().disablePlugin(plugin);
 	}
 }

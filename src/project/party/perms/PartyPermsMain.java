@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import project.party.perms.commands.CommandFramework;
 import project.party.perms.commands.CommandFramework.ClassEnumerator;
 import project.party.perms.config.Config;
+import project.party.perms.handlers.PartyHandler;
 import project.party.perms.handlers.PartyInvHandler;
 import project.party.perms.lib.References;
 import project.party.perms.sql.MySQL;
@@ -55,6 +56,12 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 
 	public PartyInvHandler getPartyInvHandler() {
 		return invHandler;
+	}
+	
+	private PartyHandler partyHandler;
+
+	public PartyHandler getPartyHandler() {
+		return partyHandler;
 	}
 
 	private Storage storage;
@@ -93,7 +100,9 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 			plugin = this;
 			framework = new CommandFramework(this);
 			invHandler = new PartyInvHandler();
+			partyHandler = new PartyHandler();
 			start = (int) System.currentTimeMillis();
+			connection = database.openConnection();
 		} catch (Exception e) {
 			handleCrash(e);
 		}
@@ -110,14 +119,12 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 			framework.registerHelp();
 
 			File folder = getDataFolder();
-			if (!folder.exists()) {
+			if (!folder.exists())
 				folder.mkdir();
-			}
 
 			configFile = new File(folder, "config.txt");
-			if (!configFile.exists()) {
+			if (!configFile.exists())
 				this.saveResource("config.txt", false);
-			}
 			config = new Config(configFile);
 
 			if (database == null)
@@ -127,8 +134,6 @@ public class PartyPermsMain extends JavaPlugin implements Listener {
 						config.getString("SQL DATABASE.database"),
 						config.getString("SQL DATABASE.username"),
 						config.getString("SQL DATABASE.password"));
-
-			connection = database.openConnection();
 
 		} catch (Exception e) {
 			handleCrash(e);
